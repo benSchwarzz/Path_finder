@@ -62,6 +62,19 @@ class Node:
     def draw(self, screen):
         pg.draw.rect(screen, self.color, (self.x, self.y, self.width, self.width))
 
+    def get_neighbors(self, grid):
+        if self.row < self.total_rows and not grid[self.row + 1][self.col].is_barrier: #Down
+            self.neighbors.append(grid[self.row + 1][self.col])
+        
+        if self.row > 0 and not grid[self.row - 1][self.col].is_barrier: #Up
+            self.neighbors.append(grid[self.row - 1][self.col])
+
+        if self.col < self.total_rows and not grid[self.row][self.col + 1].is_barrier: #Right
+            self.neighbors.append(grid[self.row][self.col + 1])
+        
+        if self.col > 0 and not grid[self.row][self.col - 1].is_barrier: #Left
+            self.neighbors.append(grid[self.row][self.col - 1])
+
 
 def h(p1, p2) -> int:
     x1, y1 = p1
