@@ -63,23 +63,35 @@ class Node:
         pg.draw.rect(screen, self.color, (self.x, self.y, self.width, self.width))
 
     def get_neighbors(self, grid):
-        if self.row < self.total_rows and not grid[self.row + 1][self.col].is_barrier: #Down
+        if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier: #Down
             self.neighbors.append(grid[self.row + 1][self.col])
         
         if self.row > 0 and not grid[self.row - 1][self.col].is_barrier: #Up
             self.neighbors.append(grid[self.row - 1][self.col])
 
-        if self.col < self.total_rows and not grid[self.row][self.col + 1].is_barrier: #Right
+        if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier: #Right
             self.neighbors.append(grid[self.row][self.col + 1])
         
         if self.col > 0 and not grid[self.row][self.col - 1].is_barrier: #Left
             self.neighbors.append(grid[self.row][self.col - 1])
+
+    def __lt__(self):
+        pass
 
 
 def h(p1, p2) -> int:
     x1, y1 = p1
     x2, y2 = p2
     return abs(x1 - x2) + abs(y1 - y2)
+
+
+def algorithm(draw, grid, start, end):
+
+
+
+
+
+        
 
 
 def make_grid(rows) -> list:
@@ -154,8 +166,14 @@ def main():
                 end = None
                 pg.time.delay(100)
         
+        keys = pg.key.get_pressed()
 
-        pg.display.update()
+        if keys[pg.K_SPACE] and not started:
+            started = True
+            for row in grid:
+                for node in row:
+                    node.get_neighbors(grid)
+            algorithm(lambda: draw_grid(screen, grid), grid, start, end)
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -163,6 +181,10 @@ def main():
             
             if started:
                 continue
+
+
+        pg.display.update()
+
     pg.quit()
 
 main()
